@@ -4,30 +4,30 @@ function App() {
   const [step, setStep] = useState('login');
   const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
-  const [timeLeft, setTimeLeft] = useState(1200); // 20 minutes for 20 questions
+  const [timeLeft, setTimeLeft] = useState(1200); // 20 Minutes
 
+  // 20 Questions List
   const questions = [
     { id: 'q1', text: 'React kisne develop kiya hai?', options: ['Google', 'Facebook', 'Amazon', 'Apple'], answer: 'Facebook' },
     { id: 'q2', text: 'Javascript extension kya hai?', options: ['.js', '.py', '.java', '.html'], answer: '.js' },
     { id: 'q3', text: 'HTML ka full form kya hai?', options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'None'], answer: 'Hyper Text Markup Language' },
-    { id: 'q4', text: 'CSS stands for?', options: ['Cascading Style Sheets', 'Colorful Style Sheets', 'Computer Style Sheets'], answer: 'Cascading Style Sheets' },
-    { id: 'q5', text: 'SQL ka use kiske liye hota hai?', options: ['Database', 'Styling', 'Operating System', 'Hardware'], answer: 'Database' },
-    { id: 'q6', text: 'Python mein list banane ke liye kaunsa bracket use hota hai?', options: ['[]', '{}', '()', '<>'], answer: '[]' },
-    { id: 'q7', text: 'HTTP ka S kya represent karta hai?', options: ['Secure', 'Simple', 'Smart', 'Standard'], answer: 'Secure' },
-    { id: 'q8', text: 'WWW kisne invent kiya?', options: ['Tim Berners-Lee', 'Bill Gates', 'Steve Jobs', 'Mark'], answer: 'Tim Berners-Lee' },
-    { id: 'q9', text: 'C++ mein output ke liye kya use hota hai?', options: ['cout', 'print', 'printf', 'echo'], answer: 'cout' },
-    { id: 'q10', text: 'React mein state update karne ke liye kya use hota hai?', options: ['useState', 'useEffect', 'useRef', 'useMemo'], answer: 'useState' },
-    // Yahan se aap apne aur 10 sawal add kar sakte hain:
-    { id: 'q11', text: 'Sawal 11 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q12', text: 'Sawal 12 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q13', text: 'Sawal 13 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q14', text: 'Sawal 14 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q15', text: 'Sawal 15 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q16', text: 'Sawal 16 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q17', text: 'Sawal 17 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q18', text: 'Sawal 18 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q19', text: 'Sawal 19 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' },
-    { id: 'q20', text: 'Sawal 20 ka text yahan likhein?', options: ['Opt A', 'Opt B', 'Opt C', 'Opt D'], answer: 'Opt A' }
+    { id: 'q4', text: 'SQL ka use kiske liye hota hai?', options: ['Database', 'Styling', 'Operating System'], answer: 'Database' },
+    { id: 'q5', text: 'Python mein list ke liye bracket?', options: ['[]', '{}', '()'], answer: '[]' },
+    { id: 'q6', text: 'C++ mein output command?', options: ['cout', 'print', 'printf'], answer: 'cout' },
+    { id: 'q7', text: 'CSS ka full form?', options: ['Cascading Style Sheets', 'Color Style', 'None'], answer: 'Cascading Style Sheets' },
+    { id: 'q8', text: 'WWW kisne banaya?', options: ['Tim Berners-Lee', 'Bill Gates', 'Jobs'], answer: 'Tim Berners-Lee' },
+    { id: 'q9', text: 'IP ka full form?', options: ['Internet Protocol', 'Internal Port', 'Index Page'], answer: 'Internet Protocol' },
+    { id: 'q10', text: 'React Hook for state?', options: ['useState', 'useEffect', 'useRef'], answer: 'useState' },
+    { id: 'q11', text: 'RAM ka full form?', options: ['Random Access Memory', 'Read Any Memory', 'None'], answer: 'Random Access Memory' },
+    { id: 'q12', text: 'CPU ka brain?', options: ['ALU', 'CU', 'Both'], answer: 'Both' },
+    { id: 'q13', text: 'Binary base kya hai?', options: ['2', '8', '10'], answer: '2' },
+    { id: 'q14', text: 'OS ka example?', options: ['Windows', 'Chrome', 'React'], answer: 'Windows' },
+    { id: 'q15', text: 'DBMS full form?', options: ['Database Management System', 'Data Base Main', 'None'], answer: 'Database Management System' },
+    { id: 'q16', text: 'Primary Key kya hai?', options: ['Unique ID', 'Normal ID', 'Duplicate'], answer: 'Unique ID' },
+    { id: 'q17', text: 'HTTP port?', options: ['80', '443', '21'], answer: '80' },
+    { id: 'q18', text: 'Java extension?', options: ['.java', '.js', '.class'], answer: '.java' },
+    { id: 'q19', text: 'Google Search Engine kab aaya?', options: ['1998', '2005', '1990'], answer: '1998' },
+    { id: 'q20', text: 'AI ka full form?', options: ['Artificial Intelligence', 'Auto Info', 'None'], answer: 'Artificial Intelligence' }
   ];
 
   useEffect(() => {
@@ -39,12 +39,6 @@ function App() {
     }
   }, [timeLeft, step]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return ${mins}:${secs < 10 ? '0' : ''}${secs};
-  };
-
   const handleSubmit = () => {
     let s = 0;
     questions.forEach(q => {
@@ -54,76 +48,47 @@ function App() {
     setStep('result');
   };
 
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
   const styles = {
-    mainContainer: {
-      minHeight: '100vh',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundAttachment: 'fixed',
-      padding: '20px'
-    },
-    glassBox: {
-      background: 'rgba(255, 255, 255, 0.1)',
-      backdropFilter: 'blur(15px)',
-      borderRadius: '20px',
-      padding: '30px',
-      width: '100%',
-      maxWidth: '650px',
-      color: 'white',
-      maxHeight: '90vh',
-      overflowY: 'auto',
-      border: '1px solid rgba(255,255,255,0.2)'
-    },
-    timerSticky: {
-      position: 'sticky',
-      top: '0',
-      background: timeLeft < 120 ? '#ff4d4d' : 'rgba(255,255,255,0.2)',
-      padding: '15px',
-      borderRadius: '10px',
-      textAlign: 'center',
-      fontSize: '22px',
-      fontWeight: 'bold',
-      marginBottom: '20px',
-      zIndex: '10',
-      boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
-    },
-    card: { background: 'rgba(255, 255, 255, 0.05)', padding: '20px', borderRadius: '15px', marginBottom: '15px' },
-    btn: { width: '100%', padding: '15px', borderRadius: '30px', border: 'none', background: '#fff', fontWeight: 'bold', cursor: 'pointer', marginTop: '20px', fontSize: '18px' }
+    main: { minHeight: '100vh', background: '#1a1a1a', color: 'white', fontFamily: 'Arial', padding: '20px', display: 'flex', justifyContent: 'center' },
+    box: { background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', padding: '30px', borderRadius: '15px', width: '100%', maxWidth: '600px', border: '1px solid #444' },
+    timer: { position: 'sticky', top: '0', background: '#ff4d4d', padding: '10px', borderRadius: '8px', textAlign: 'center', fontWeight: 'bold', marginBottom: '20px' },
+    card: { background: '#222', padding: '15px', borderRadius: '10px', marginBottom: '15px' },
+    btn: { width: '100%', padding: '15px', background: 'white', border: 'none', borderRadius: '25px', fontWeight: 'bold', cursor: 'pointer', fontSize: '16px' }
   };
 
   return (
-    <div style={styles.mainContainer}>
+    <div style={styles.main}>
       {step === 'login' ? (
-        <div style={{...styles.glassBox, maxWidth: '400px', textAlign: 'center'}}>
-          <h1>Final MCQ Test</h1>
-          <p style={{marginBottom: '20px'}}>Total Questions: 20 <br/> Time: 20 Minutes</p>
+        <div style={{...styles.box, textAlign: 'center', height: 'fit-content'}}>
+          <h1>Computer Quiz</h1>
+          <p>20 Questions | 20 Minutes</p>
           <button style={styles.btn} onClick={() => setStep('quiz')}>Start Exam</button>
         </div>
       ) : step === 'quiz' ? (
-        <div style={styles.glassBox}>
-          <div style={styles.timerSticky}>⏱ Time Left: {formatTime(timeLeft)}</div>
-          {questions.map((q, idx) => (
+        <div style={styles.box}>
+          <div style={styles.timer}>Time Left: {formatTime(timeLeft)}</div>
+          {questions.map((q, i) => (
             <div key={q.id} style={styles.card}>
-              <p style={{fontSize: '18px', fontWeight: 'bold'}}>{idx + 1}. {q.text}</p>
+              <p>{i + 1}. {q.text}</p>
               {q.options.map(opt => (
-                <label key={opt} style={{display: 'block', margin: '12px 0', cursor: 'pointer', fontSize: '16px'}}>
-                  <input type="radio" name={q.id} onChange={() => setUserAnswers({...userAnswers, [q.id]: opt})} style={{marginRight: '12px'}} />
-                  {opt}
+                <label key={opt} style={{display: 'block', margin: '10px 0'}}>
+                  <input type="radio" name={q.id} onChange={() => setUserAnswers({...userAnswers, [q.id]: opt})} /> {opt}
                 </label>
               ))}
             </div>
           ))}
-          <button style={styles.btn} onClick={handleSubmit}>Submit My Test</button>
+          <button style={styles.btn} onClick={handleSubmit}>Submit Test</button>
         </div>
       ) : (
-        <div style={{...styles.glassBox, textAlign: 'center'}}>
-          <h1 style={{fontSize: '40px'}}>🎉 Exam Done!</h1>
-          <p style={{fontSize: '30px', margin: '20px 0'}}>Your Final Score: <br/> <b>{score} / {questions.length}</b></p>
-          <button style={styles.btn} onClick={() => window.location.reload()}>Try Again</button>
+        <div style={{...styles.box, textAlign: 'center', height: 'fit-content'}}>
+          <h1>Result: {score} / {questions.length}</h1>
+          <button style={styles.btn} onClick={() => window.location.reload()}>Restart</button>
         </div>
       )}
     </div>
