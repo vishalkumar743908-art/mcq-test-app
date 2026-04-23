@@ -1,107 +1,101 @@
 import React, { useState } from 'react';
 
+
+
 function App() {
   const [step, setStep] = useState('login');
-  const [score, setScore] = useState(null);
-  // User ke answers store karne ke liye state
+  const [score, setScore] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
 
   const questions = [
-    { id: 1, questionText: 'React kisne develop kiya hai?', options: ['Google', 'Facebook', 'Amazon', 'Apple'], answer: 'Facebook' },
-    { id: 2, questionText: 'Javascript extension kya hai?', options: ['.js', '.py', '.java', '.html'], answer: '.js' },
-    { id: 3, questionText: 'HTML ka full form kya hai?', options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'None'], answer: 'Hyper Text Markup Language' }
+    { id: 'q1', text: 'React kisne develop kiya hai?', options: ['Google', 'Facebook', 'Amazon', 'Apple'], answer: 'Facebook' },
+    { id: 'q2', text: 'Javascript extension kya hai?', options: ['.js', '.py', '.java', '.html'], answer: '.js' },
+    { id: 'q3', text: 'HTML ka full form kya hai?', options: ['Hyper Text Markup Language', 'High Tech Modern Language', 'None'], answer: 'Hyper Text Markup Language' },
+    { id: 'q4', text: 'CSS stands for?', options: ['Cascading Style Sheets', 'Colorful Style Sheets', 'Computer Style Sheets'], answer: 'Cascading Style Sheets' }
   ];
 
   const styles = {
     mainContainer: {
       minHeight: '100vh',
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      background: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=2040&auto=format&fit=crop")',
+      background: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop")',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      fontFamily: 'Arial, sans-serif',
-      color: 'white',
-      padding: '40px 20px'
+      backgroundAttachment: 'fixed',
+      fontFamily: 'sans-serif',
+      padding: '40px 10px'
     },
     glassBox: {
-      background: 'rgba(255, 255, 255, 0.15)',
+      background: 'rgba(255, 255, 255, 0.1)',
       backdropFilter: 'blur(15px)',
-      WebkitBackdropFilter: 'blur(15px)',
       borderRadius: '20px',
       padding: '30px',
       width: '100%',
-      maxWidth: '600px',
+      maxWidth: '550px',
       border: '1px solid rgba(255, 255, 255, 0.2)',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+      color: 'white',
+      maxHeight: '90vh',
+      overflowY: 'auto' // Saare sawal agar zyada honge toh scroll ho jayenge
     },
-    questionCard: {
-      background: 'rgba(255, 255, 255, 0.1)',
-      padding: '15px',
-      borderRadius: '10px',
-      marginBottom: '20px',
+    card: {
+      background: 'rgba(255, 255, 255, 0.05)',
+      padding: '20px',
+      borderRadius: '15px',
+      marginBottom: '15px',
       textAlign: 'left'
     },
-    optionLabel: {
+    option: {
       display: 'block',
-      margin: '10px 0',
+      margin: '12px 0',
       cursor: 'pointer',
-      fontSize: '16px'
+      padding: '8px',
+      borderRadius: '5px',
+      background: 'rgba(255,255,255,0.05)'
     },
-    button: {
+    btn: {
       width: '100%',
       padding: '15px',
-      borderRadius: '25px',
+      borderRadius: '30px',
       border: 'none',
       background: '#fff',
-      color: '#333',
       fontWeight: 'bold',
+      fontSize: '16px',
       cursor: 'pointer',
-      fontSize: '18px',
-      marginTop: '10px'
+      marginTop: '20px'
     }
   };
 
-  const handleOptionChange = (qId, selectedOption) => {
-    setUserAnswers({ ...userAnswers, [qId]: selectedOption });
-  };
-
   const handleSubmit = () => {
-    let finalScore = 0;
-    questions.forEach((q) => {
-      if (userAnswers[q.id] === q.answer) {
-        finalScore++;
-      }
+    let s = 0;
+    questions.forEach(q => {
+      if (userAnswers[q.id] === q.answer) s++;
     });
-    setScore(finalScore);
+    setScore(s);
     setStep('result');
   };
 
   return (
     <div style={styles.mainContainer}>
-      {step === 'login' && (
-        <div style={{...styles.glassBox, maxWidth: '400px', textAlign: 'center'}}>
-          <h1>Login</h1>
-          <input style={{width: '100%', padding: '12px', margin: '10px 0', borderRadius: '5px', border: 'none'}} type="text" placeholder="Username" />
-          <button style={styles.button} onClick={() => setStep('quiz')}>Start Quiz</button>
+      {step === 'login' ? (
+        <div style={{...styles.glassBox, maxWidth: '380px', textAlign: 'center'}}>
+          <h1 style={{marginBottom: '20px'}}>Ready?</h1>
+          <button style={styles.btn} onClick={() => setStep('quiz')}>Start Exam</button>
         </div>
-      )}
-
-      {step === 'quiz' && (
-        <div style={styles.glassBox}>
-          <h2 style={{textAlign: 'center', marginBottom: '30px'}}>All Questions</h2>
-          
-          {questions.map((q, index) => (
-            <div key={q.id} style={styles.questionCard}>
-              <p style={{fontWeight: 'bold', marginBottom: '10px'}}>{index + 1}. {q.questionText}</p>
-              {q.options.map((opt) => (
-                <label key={opt} style={styles.optionLabel}>
+      ) : step === 'quiz' ? (
+        <div style={styles.glassBox} className="custom-scroll">
+          <h2 style={{textAlign: 'center', marginBottom: '25px'}}>MCQ Test</h2>
+          {questions.map((q, idx) => (
+            <div key={q.id} style={styles.card}>
+              <p style={{fontSize: '18px', marginBottom: '10px'}}>{idx + 1}. {q.text}</p>
+              {q.options.map(opt => (
+                <label key={opt} style={styles.option}>
                   <input 
                     type="radio" 
-                    name={question-${q.id}} 
-                    value={opt} 
-                    onChange={() => handleOptionChange(q.id, opt)}
+                    name={q.id} 
+                    onChange={() => setUserAnswers({...userAnswers, [q.id]: opt})}
                     style={{marginRight: '10px'}}
                   />
                   {opt}
@@ -109,16 +103,13 @@ function App() {
               ))}
             </div>
           ))}
-
-          <button style={styles.button} onClick={handleSubmit}>Submit Quiz</button>
+          <button style={styles.btn} onClick={handleSubmit}>Finish & Submit</button>
         </div>
-      )}
-
-      {step === 'result' && (
+      ) : (
         <div style={{...styles.glassBox, textAlign: 'center'}}>
-          <h2>Quiz Result</h2>
-          <p style={{fontSize: '30px', margin: '20px 0'}}>Score: {score} / {questions.length}</p>
-          <button style={styles.button} onClick={() => window.location.reload()}>Restart</button>
+          <h1>Result</h1>
+          <p style={{fontSize: '40px', margin: '20px 0'}}>{score} / {questions.length}</p>
+          <button style={styles.btn} onClick={() => window.location.reload()}>Restart</button>
         </div>
       )}
     </div>
