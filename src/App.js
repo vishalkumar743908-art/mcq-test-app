@@ -1,75 +1,69 @@
 import React, { useState } from 'react';
-import './App.css'; // Make sure your CSS file exists
+import './App.css';
 
 function App() {
-  // Questions ka array
-  const questions = [
-    {
-      questionText: 'Python ka extension kya hai?',
-      answerOptions: [
-        { answerText: '.js', isCorrect: false },
-        { answerText: '.py', isCorrect: true },
-        { answerText: '.html', isCorrect: false },
-        { answerText: '.cpp', isCorrect: false },
-      ],
-    },
-    {
-      questionText: 'React kisne develop kiya hai?',
-      answerOptions: [
-        { answerText: 'Google', isCorrect: false },
-        { answerText: 'Apple', isCorrect: false },
-        { answerText: 'Facebook', isCorrect: true },
-        { answerText: 'Microsoft', isCorrect: false },
-      ],
-    },
-  ];
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Login track karne ke liye
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0);
 
-  const handleAnswerOptionClick = (isCorrect) => {
-    if (isCorrect) {
-      setScore(score + 1);
-    }
+  const questions = [
+    {
+      questionText: 'Python extension?',
+      answerOptions: [
+        { answerText: '.js', isCorrect: false },
+        { answerText: '.py', isCorrect: true },
+      ],
+    },
+    // Aur questions yahan add kar sakte hain
+  ];
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsLoggedIn(true); // Login button dabane par quiz start hoga
+  };
+
+  const handleAnswerClick = (isCorrect) => {
+    if (isCorrect) setScore(score + 1);
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
     } else {
-      setShowScore(true); // Yahan Result screen ON ho jayegi
+      setShowScore(true);
     }
   };
 
   return (
     <div className='app'>
-      {showScore ? (
-        /* Result Section */
+      {!isLoggedIn ? (
+        /* 1. LOGIN PAGE */
+        <div className='login-section'>
+          <h2>Login to Start Quiz</h2>
+          <form onSubmit={handleLogin}>
+            <input type="text" placeholder="Username" required style={{display: 'block', margin: '10px auto'}} />
+            <input type="password" placeholder="Password" required style={{display: 'block', margin: '10px auto'}} />
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      ) : showScore ? (
+        /* 2. RESULT PAGE */
         <div className='score-section'>
-          <h2>Quiz Finished!</h2>
-          <p>Aapne {questions.length} mein se {score} sahi jawab diye.</p>
-          <button onClick={() => window.location.reload()}>Restart Quiz</button>
+          <h2>Final Result</h2>
+          <p>Score: {score} / {questions.length}</p>
+          <button onClick={() => window.location.reload()}>Restart</button>
         </div>
       ) : (
-        /* Quiz Section */
-        <>
-          <div className='question-section'>
-            <div className='question-count'>
-              <span>Question {currentQuestion + 1}</span>/{questions.length}
-            </div>
-            <div className='question-text'>{questions[currentQuestion].questionText}</div>
-          </div>
+        /* 3. QUIZ PAGE */
+        <div className='quiz-section'>
+          <div className='question-text'>{questions[currentQuestion].questionText}</div>
           <div className='answer-section'>
-            {questions[currentQuestion].answerOptions.map((answerOption, index) => (
-              <button 
-                key={index}
-                onClick={() => handleAnswerOptionClick(answerOption.isCorrect)}
-              >
-                {answerOption.answerText}
+            {questions[currentQuestion].answerOptions.map((option, index) => (
+              <button key={index} onClick={() => handleAnswerClick(option.isCorrect)}>
+                {option.answerText}
               </button>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
