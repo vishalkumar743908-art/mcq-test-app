@@ -1,80 +1,131 @@
 import React, { useState } from 'react';
+import './App.css'; // Make sure you also update the CSS file below
 
 function App() {
-  // 1. States setup
-  const [step, setStep] = useState('login'); // 'login', 'quiz', ya 'result'
-  const [score, setScore] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
+  // Aapke questions ka array
   const questions = [
     {
-      questionText: 'React kisne banaya hai?',
-      options: ['Google', 'Facebook', 'Amazon', 'Apple'],
-      answer: 'Facebook'
+      questionText: 'HTML ka main purpose kya hai?',
+      answerOptions: [
+        { answerText: 'Database management', isCorrect: false },
+        { answerText: 'Website ka structure banana', isCorrect: true },
+        { answerText: 'Website styling', isCorrect: false },
+        { answerText: 'Backend logic', isCorrect: false },
+      ],
     },
     {
-      questionText: 'Javascript extension kya hai?',
-      options: ['.py', '.java', '.js', '.html'],
-      answer: '.js'
-    }
+      questionText: 'CSS ka full form kya hai?',
+      answerOptions: [
+        { answerText: 'Computer Style Sheets', isCorrect: false },
+        { answerText: 'Cascading Style Sheets', isCorrect: true },
+        { answerText: 'Creative Style System', isCorrect: false },
+        { answerText: 'Colorful Style Sheets', isCorrect: false },
+      ],
+    },
+    // Aur questions yahan add karein...
   ];
 
-  // 2. Handlers
   const handleLogin = (e) => {
     e.preventDefault();
-    setStep('quiz');
+    // Simple verification for testing (Replace with your own logic if needed)
+    if (username.trim() !== '' && password.trim() !== '') {
+      setIsLoggedIn(true);
+    } else {
+      alert("Please enter both Username and Password.");
+    }
   };
 
-  const handleAnswer = (selectedOption) => {
-    if (selectedOption === questions[currentQuestion].answer) {
+  const handleAnswerClick = (isCorrect) => {
+    if (isCorrect) {
       setScore(score + 1);
     }
 
-    const next = currentQuestion + 1;
-    if (next < questions.length) {
-      setCurrentQuestion(next);
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
     } else {
-      setStep('result'); // Quiz khatam, result dikhao
+      setShowResult(true); // Yahan quiz khatam, result dikhao
     }
   };
 
-  // 3. UI Rendering
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'Arial' }}>
-      
-      {/* STEP 1: LOGIN */}
-      {step === 'login' && (
-        <div>
-          <h2>Login to Start</h2>
-          <form onSubmit={handleLogin}>
-            <input type="text" placeholder="Username" required /><br/><br/>
-            <button type="submit">Start Quiz</button>
+    <div className='main-container'>
+      {!isLoggedIn ? (
+        /* --- 1. GLASSMORPHISM LOGIN PAGE --- */
+        <div className='login-container'>
+          <form className='login-form' onSubmit={handleLogin}>
+            <h1>Login</h1>
+            
+            <div className='input-group'>
+              <input 
+                type="text" 
+                placeholder="Username" 
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required 
+              />
+              <span className='icon'>&#128100;</span> {/* Person icon */}
+            </div>
+
+            <div className='input-group'>
+              <input 
+                type="password" 
+                placeholder="Password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required 
+              />
+              <span className='icon'>&#128274;</span> {/* Lock icon */}
+            </div>
+
+            <div className='options'>
+              <label>
+                <input type="checkbox" /> Remember me
+              </label>
+              <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="submit" className='login-btn'>Login</button>
+            
+            <p className='register-text'>Don't have an account? <a href="#">Register</a></p>
           </form>
         </div>
-      )}
-
-      {/* STEP 2: QUIZ */}
-      {step === 'quiz' && (
-        <div>
-          <h3>Question {currentQuestion + 1} / {questions.length}</h3>
-          <p>{questions[currentQuestion].questionText}</p>
-          {questions[currentQuestion].options.map((opt, i) => (
-            <button key={i} onClick={() => handleAnswer(opt)} style={{ margin: '5px' }}>
-              {opt}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* STEP 3: RESULT */}
-      {step === 'result' && (
-        <div>
+      ) : showResult ? (
+        /* --- 2. RESULT PAGE --- */
+        <div className='glass-panel'>
           <h2>Quiz Completed!</h2>
-          <p>Aapka Score: <b>{score}</b> / {questions.length}</p>
-          <button onClick={() => window.location.reload()}>Try Again</button>
+          <p className='final-score'>Final Score: {score} / {questions.length}</p>
+          <button onClick={() => window.location.reload()} className='restart-btn'>Restart Quiz</button>
+        </div>
+      ) : (
+        /* --- 3. QUIZ PAGE --- */
+        <div className='glass-panel'>
+          <div className='question-section'>
+            <div className='question-count'>
+              <span>Question {currentQuestion + 1}</span> / {questions.length}
+            </div>
+            <div className='question-text'>{questions[currentQuestion].questionText}</div>
+          </div>
+          <div className='answer-section'>
+            {questions[currentQuestion].answerOptions.map((option, index) => (
+              <button 
+                key={index} 
+                className='answer-btn' 
+                onClick={() => handleAnswerClick(option.isCorrect)}
+              >
+                {option.answerText}
+              </button>
+            ))}
+          </div>
         </div>
       )}
-
     </div>
   );
 }
