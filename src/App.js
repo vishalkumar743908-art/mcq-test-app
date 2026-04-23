@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 import './App.css'; // Make sure you also update the CSS file below
+const containerStyle = {
+  background: 'linear-gradient(45deg, #6a11cb 0%, #2575fc 100%)',
+  minHeight: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+};
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,7 +63,7 @@ function App() {
   };
 
   return (
-    <div className='main-container'>
+    <div style={containerStyle}>
       {!isLoggedIn ? (
         /* --- 1. GLASSMORPHISM LOGIN PAGE --- */
         <div className='login-container'>
