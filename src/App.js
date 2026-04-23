@@ -6,25 +6,32 @@ import Result from './components/Result';
 import './App.css';
 
 function App() {
-  const [userName, setUserName] = useState("");
-  const [scoreData, setScoreData] = useState(null);
+  const [showResult, setShowResult] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const handleAnswerClick = (isCorrect) => {
+    if (isCorrect) setScore(score + 1);
+
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setShowResult(true); // Yahan se result screen trigger hogi
+    }
+  };
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Login setUserName={setUserName} />} />
-          <Route 
-            path="/quiz" 
-            element={userName ? <Quiz userName={userName} setScoreData={setScoreData} /> : <Navigate to="/" />} 
-          />
-          <Route 
-            path="/result" 
-            element={scoreData ? <Result scoreData={scoreData} userName={userName} /> : <Navigate to="/" />} 
-          />
-        </Routes>
-      </div>
-    </Router>
+    <div className="app">
+      {showResult ? (
+        <div className="score-section">
+          You scored {score} out of {questions.length}
+        </div>
+      ) : (
+        <div className="quiz-section">
+          {/* Aapka Quiz Code */}
+        </div>
+      )}
+    </div>
   );
 }
 
